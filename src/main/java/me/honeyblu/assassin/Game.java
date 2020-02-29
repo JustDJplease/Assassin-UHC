@@ -47,6 +47,7 @@ public class Game extends JavaPlugin {
     public Player target;
     public boolean isFrozen = false;
     public boolean isGameActive = false;
+    public long timeStartGame = 0L;
 
     // ------------------------------- //
     // Private variables
@@ -121,6 +122,7 @@ public class Game extends JavaPlugin {
 
         // Updating public variables.
         isGameActive = true;
+        timeStartGame = System.currentTimeMillis();
         this.assassin = assassin;
         this.target = target;
 
@@ -150,6 +152,7 @@ public class Game extends JavaPlugin {
         if (isGameActive) {
             Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 100f, 0.1f));
             Bukkit.broadcastMessage("§2The hunt has ended!");
+            Bukkit.broadcastMessage("§aThe game has lasted " + getReadableTimeLasted() + ".");
         }
 
         // Resetting the players.
@@ -164,6 +167,7 @@ public class Game extends JavaPlugin {
         // Clearing public variables.
         assassin = null;
         target = null;
+        timeStartGame = 0L;
         isFrozen = false;
         isGameActive = false;
 
@@ -174,6 +178,27 @@ public class Game extends JavaPlugin {
 
         if (scoreboard.getTeam("_do_not_edit_") != null) {
             team.unregister();
+        }
+    }
+
+    private String getReadableTimeLasted() {
+        long milliseconds = System.currentTimeMillis() - timeStartGame;
+
+        // If the time somehow lasted a negative amount.
+        if (milliseconds < 0) {
+            return "forever";
+        }
+
+        // Calculate the time.
+        int seconds = (int) (milliseconds / 1000) % 60;
+        int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
+        int hours = (int) ((milliseconds / (1000 * 60 * 60)) % 24);
+
+        // Display the time in a readable format.
+        if (hours < 1) {
+            return minutes + " Minutes and " + seconds + "Seconds";
+        } else {
+            return hours + " Hour, " + minutes + " Minutes and " + seconds + "Seconds";
         }
     }
 }
