@@ -53,12 +53,12 @@ public class Game extends JavaPlugin {
     public Player target;
     public boolean isFrozen = false;
     public boolean isGameActive = false;
-    public long timeStartGame = 0L;
 
     // ------------------------------- //
     // Private variables
     // ------------------------------- //
     private Team team;
+    private long timeStartGame = 0L;
 
     // ------------------------------- //
     // onEnable method
