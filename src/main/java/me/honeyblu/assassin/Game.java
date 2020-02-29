@@ -13,12 +13,15 @@
 
 package me.honeyblu.assassin;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import me.honeyblu.assassin.commands.StartCommand;
 import me.honeyblu.assassin.listeners.CompassEvent;
 import me.honeyblu.assassin.listeners.DamageEvent;
 import me.honeyblu.assassin.listeners.DeathEvent;
 import me.honeyblu.assassin.listeners.MoveEvent;
 import me.honeyblu.assassin.tasks.LineOfSightTask;
+import me.honeyblu.assassin.util.WorldBorderUtil;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -43,6 +46,9 @@ public class Game extends JavaPlugin {
     // Public variables
     // ------------------------------- //
     public Logger logger;
+    public WorldBorderUtil worldBorderUtil;
+    public ProtocolManager protocolManager;
+
     public Player assassin;
     public Player target;
     public boolean isFrozen = false;
@@ -62,6 +68,10 @@ public class Game extends JavaPlugin {
 
         // Registering logger.
         logger = getLogger();
+
+        // Registering world border utility (and its dependency).
+        protocolManager = ProtocolLibrary.getProtocolManager();
+        worldBorderUtil = new WorldBorderUtil(this);
 
         // Registering damage event.
         PluginManager pluginManager = Bukkit.getPluginManager();

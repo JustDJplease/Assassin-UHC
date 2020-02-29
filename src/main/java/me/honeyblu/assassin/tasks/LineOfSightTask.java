@@ -32,6 +32,8 @@ public class LineOfSightTask implements Runnable {
     // ------------------------------- //
     private final Game game;
     private int heartbeat = 20;
+    private boolean isWorldBorderWarningActive = false;
+    private boolean shouldBeDifferentPitch = true;
 
     public LineOfSightTask(Game game) {
         this.game = game;
@@ -70,6 +72,17 @@ public class LineOfSightTask implements Runnable {
 
             if ((targetIsInWorld == assassinIsInWorld) && targetLocation.distanceSquared(assassinLocation) < 1000) {
                 game.target.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§7* heart beating *"));
+
+                // Displaying a the world border glowing effect.
+                if (!isWorldBorderWarningActive) {
+                    game.worldBorderUtil.shrink();
+                    isWorldBorderWarningActive = true;
+                }
+            } else {
+                if (isWorldBorderWarningActive) {
+                    game.worldBorderUtil.enlarge();
+                    isWorldBorderWarningActive = false;
+                }
             }
         }
 
@@ -96,8 +109,15 @@ public class LineOfSightTask implements Runnable {
         game.assassin.addPotionEffect(blindness, true);
 
         // Playing the 'line of sight' sound-effect.
-        game.assassin.playSound(assassinLocation, Sound.BLOCK_NOTE_BLOCK_BASS, 0.4f, 0.6f);
-        game.target.playSound(targetLocation, Sound.BLOCK_NOTE_BLOCK_BASS, 0.4f, 0.6f);
+        if (shouldBeDifferentPitch) {
+            game.assassin.playSound(assassinLocation, Sound.BLOCK_NOTE_BLOCK_BASS, 0.4f, 0.6f);
+            game.target.playSound(targetLocation, Sound.BLOCK_NOTE_BLOCK_BASS, 0.4f, 0.6f);
+            shouldBeDifferentPitch = false;
+        } else {
+            game.assassin.playSound(assassinLocation, Sound.BLOCK_NOTE_BLOCK_BASS, 0.4f, 0.7f);
+            game.target.playSound(targetLocation, Sound.BLOCK_NOTE_BLOCK_BASS, 0.4f, 0.7f);
+            shouldBeDifferentPitch = true;
+        }
 
         // Freezing the assassin upon moving.
         game.isFrozen = true;

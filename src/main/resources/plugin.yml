@@ -6,6 +6,7 @@ authors: [HoneyBlu]
 main: me.honeyblu.assassin.Game
 website: https://github.com/JustDJplease/
 softdepend: []
+depend: [ProtocolLib]
 
 api-version: 1.13
 
