@@ -206,9 +206,9 @@ public class Game extends JavaPlugin {
 
         // Display the time in a readable format.
         if (hours < 1) {
-            return minutes + " Minutes and " + seconds + "Seconds";
+            return minutes + " Minutes and " + seconds + " Seconds";
         } else {
-            return hours + " Hour, " + minutes + " Minutes and " + seconds + "Seconds";
+            return hours + " Hour, " + minutes + " Minutes and " + seconds + " Seconds";
         }
     }
 }
