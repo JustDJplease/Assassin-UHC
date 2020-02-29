@@ -1,0 +1,14 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+
+authors: [HoneyBlu]
+main: me.honeyblu.assassin.Game
+website: https://github.com/JustDJplease/
+softdepend: []
+
+api-version: 1.13
+
+commands:
+  start:
+    description: Starts the game.
