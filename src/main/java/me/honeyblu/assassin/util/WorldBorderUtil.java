@@ -42,6 +42,7 @@ public class WorldBorderUtil {
 
         // Sending the packet.
         packet.sendPacket(game.assassin);
+        packet.sendPacket(game.target);
     }
 
     public void enlarge() {
@@ -52,5 +53,6 @@ public class WorldBorderUtil {
 
         // Sending the packet.
         packet.sendPacket(game.assassin);
+        packet.sendPacket(game.target);
     }
 }
