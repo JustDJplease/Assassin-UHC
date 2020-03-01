@@ -54,10 +54,8 @@ public class LineOfSightTask implements Runnable {
         }
 
         // Preventing NullPointerExceptions.
-        if (game.assassin == null || game.target == null) {
-            game.logger.severe("Player cannot be null.");
-            return;
-        }
+        Validate.notNull(game.target, "Target player cannot be null!");
+        Validate.notNull(game.assassin, "Assassin player cannot be null!");
 
         Location targetLocation = game.target.getLocation();
         Location assassinLocation = game.assassin.getLocation();
@@ -103,9 +101,7 @@ public class LineOfSightTask implements Runnable {
         game.assassin.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§4You are frozen"));
 
         // Blinding the assassin.
-        PotionEffect blindness = new PotionEffect(PotionEffectType.BLINDNESS, 20, 0);
-        // Commented out since we're now forcing this effect instead of removing and then re-adding it.
-        // game.assassin.removePotionEffect(PotionEffectType.BLINDNESS);
+        PotionEffect blindness = new PotionEffect(PotionEffectType.BLINDNESS, 30, 0);
         game.assassin.addPotionEffect(blindness, true);
 
         // Playing the 'line of sight' sound-effect.
