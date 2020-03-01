@@ -15,20 +15,18 @@ package me.honeyblu.assassin.listeners;
 
 import me.honeyblu.assassin.Game;
 import org.apache.commons.lang.Validate;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EnderDragonChangePhaseEvent;
 
-public class DamageEvent implements Listener {
+public class DragonEvent {
 
     // ------------------------------- //
     // Constructor
     // ------------------------------- //
     private final Game game;
 
-    public DamageEvent(Game game) {
+    public DragonEvent(Game game) {
         this.game = game;
     }
 
@@ -36,22 +34,15 @@ public class DamageEvent implements Listener {
     // Listener
     // ------------------------------- //
     @EventHandler
-    public void onAssassinHitPlayer(EntityDamageByEntityEvent event) {
+    public void onDragonChangePhase(EnderDragonChangePhaseEvent event) {
 
         // Checking if a game is active.
         if (!game.isGameActive) {
             return;
         }
 
-        Entity damager = event.getDamager();
-        Entity entity = event.getEntity();
-
-        // Checking if the entities are both players.
-        if (!(damager instanceof Player)) {
-            return;
-        }
-
-        if (!(entity instanceof Player)) {
+        // Checking if the dragon has been defeated.
+        if (event.getNewPhase() != EnderDragon.Phase.DYING) {
             return;
         }
 
@@ -59,29 +50,6 @@ public class DamageEvent implements Listener {
         Validate.notNull(game.target, "Target player cannot be null!");
         Validate.notNull(game.assassin, "Assassin player cannot be null!");
 
-        Player assassin = (Player) damager;
-        Player target = (Player) entity;
-
-        // Checking if the assassin damages the target.
-        if (assassin != game.assassin) {
-            return;
-        }
-
-        if (target != game.target) {
-            return;
-        }
-
-        // Cancelling damage whenever the assassin is frozen.
-        if (game.isFrozen) {
-            game.assassin.sendMessage("§cYou cannot damage the target whilst frozen.");
-            event.setCancelled(true);
-            return;
-        }
-
-        // Damaging the target.
-        event.setDamage(9000);
-
-        // Ending the game.
-        game.endGame(false);
+        game.endGame(true);
     }
 }

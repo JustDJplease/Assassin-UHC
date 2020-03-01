@@ -52,7 +52,12 @@ public class WorldBorderUtil {
         packet.setWarningDistance(5);
 
         // Sending the packet.
-        packet.sendPacket(game.assassin);
-        packet.sendPacket(game.target);
+        if (game.assassin != null) {
+            packet.sendPacket(game.assassin);
+        }
+
+        if (game.target != null) {
+            packet.sendPacket(game.target);
+        }
     }
 }

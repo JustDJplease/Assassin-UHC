@@ -36,8 +36,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import java.util.logging.Logger;
-
 public class Game extends JavaPlugin {
 
     // ------------------------------- //
@@ -115,14 +113,14 @@ public class Game extends JavaPlugin {
     // ------------------------------- //
     @Override
     public void onDisable() {
-        endGame();
+        endGame(false);
     }
 
     // ------------------------------- //
     // Public methods
     // ------------------------------- //
     public void startGame(Player assassin, Player target) {
-        
+
         // Announcing the game.
         Bukkit.broadcastMessage("§a" + assassin.getName() + "§2 has started hunting §a" + target.getName() + "§2.");
         Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 100f, 0.1f));
@@ -153,12 +151,20 @@ public class Game extends JavaPlugin {
         assassin.addPotionEffect(blindness);
     }
 
-    public void endGame() {
+    public void endGame(boolean wonByTarget) {
 
         // Checking if a game is active.
         if (isGameActive) {
             Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 100f, 0.1f));
-            Bukkit.broadcastMessage("§2The hunt has ended!");
+            if (wonByTarget) {
+                Bukkit.broadcastMessage("§2The hunt has ended! The§a dragon§2 was defeated!");
+            } else {
+                if (target == null) {
+                    Bukkit.broadcastMessage("§2The hunt has ended! The§a target§2 was slain!");
+                } else {
+                    Bukkit.broadcastMessage("§2The hunt has ended! §a" + target.getName() + "§2 was slain!");
+                }
+            }
             Bukkit.broadcastMessage("§aThe game has lasted " + getReadableTimeLasted() + ".");
         }
 
@@ -170,6 +176,8 @@ public class Game extends JavaPlugin {
         if (target != null) {
             team.removeEntry(target.getName());
         }
+
+        worldBorderUtil.enlarge();
 
         // Clearing public variables.
         assassin = null;

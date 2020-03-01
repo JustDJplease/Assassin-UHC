@@ -59,6 +59,6 @@ public class DeathEvent implements Listener {
         }
 
         // Ending the game if it had not already ended.
-        game.endGame();
+        game.endGame(false);
     }
 }
