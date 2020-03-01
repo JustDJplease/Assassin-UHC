@@ -14,6 +14,7 @@
 package me.honeyblu.assassin.listeners;
 
 import me.honeyblu.assassin.Game;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,10 +44,8 @@ public class MoveEvent implements Listener {
         }
 
         // Preventing NullPointerExceptions.
-        if (game.assassin == null || game.target == null) {
-            game.logger.severe("Player cannot be null.");
-            return;
-        }
+        Validate.notNull(game.target, "Target player cannot be null!");
+        Validate.notNull(game.assassin, "Assassin player cannot be null!");
 
         Player assassin = event.getPlayer();
 
