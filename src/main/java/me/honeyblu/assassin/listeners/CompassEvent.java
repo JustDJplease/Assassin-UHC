@@ -62,10 +62,8 @@ public class CompassEvent implements Listener {
         }
 
         // Preventing NullPointerExceptions.
-        if (game.target == null || game.assassin == null) {
-            game.logger.severe("Player cannot be null.");
-            return;
-        }
+        Validate.notNull(game.target, "Target player cannot be null!");
+        Validate.notNull(game.assassin, "Assassin player cannot be null!");
 
         Player assassin = event.getPlayer();
 
@@ -102,6 +100,7 @@ public class CompassEvent implements Listener {
         // Setting the new compass location.
         Location targetLocation = game.target.getLocation();
         Location assassinLocation = game.assassin.getLocation();
+
         World targetWorld = targetLocation.getWorld();
         World assassinWorld = assassinLocation.getWorld();
 
@@ -119,24 +118,23 @@ public class CompassEvent implements Listener {
         }
 
         // Playing a sound-effect and updating the cooldown.
-        game.assassin.playSound(assassinLocation, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100f, 1f);
+        assassin.playSound(assassinLocation, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100f, 1f);
         assassinWorld.playSound(assassinLocation, Sound.ENTITY_ENDER_DRAGON_GROWL, 100f, 0.4f);
-        lastCompassCheck = System.currentTimeMillis();
+
+        // Updating cooldown variables.
+        lastCompassCheck = currentTime;
+        lastInteract = currentTime;
 
         // Giving the assassin speed and jump-boost based on the distance (If they are very far away).
         if ((assassinLocation.distanceSquared(targetLocation) >= 90000) || shouldGiveSpeedAnyway) {
-            // Commented out since we're now forcing this effect instead of removing and then re-adding it.
-            // game.assassin.removePotionEffect(PotionEffectType.SPEED);
-            // game.assassin.removePotionEffect(PotionEffectType.JUMP);
-            // game.assassin.removePotionEffect(PotionEffectType.FAST_DIGGING);
 
             PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 280, 4);
             PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, 280, 2);
             PotionEffect haste = new PotionEffect(PotionEffectType.FAST_DIGGING, 280, 1);
 
-            game.assassin.addPotionEffect(speed, true);
-            game.assassin.addPotionEffect(jump, true);
-            game.assassin.addPotionEffect(haste, true);
+            assassin.addPotionEffect(speed, true);
+            assassin.addPotionEffect(jump, true);
+            assassin.addPotionEffect(haste, true);
 
             assassin.sendMessage("§2You received §aSpeed §2, §aJump §2and §aHaste§2.");
             return;
@@ -144,18 +142,14 @@ public class CompassEvent implements Listener {
 
         // Giving the assassin speed and jump-boost based on the distance (If they are relatively far away).
         if ((assassinLocation.distanceSquared(targetLocation) >= 15625)) {
-            // Commented out since we're now forcing this effect instead of removing and then re-adding it.
-            // game.assassin.removePotionEffect(PotionEffectType.SPEED);
-            // game.assassin.removePotionEffect(PotionEffectType.JUMP);
-            // game.assassin.removePotionEffect(PotionEffectType.FAST_DIGGING);
 
             PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, 140, 4);
             PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, 140, 2);
             PotionEffect haste = new PotionEffect(PotionEffectType.FAST_DIGGING, 140, 1);
 
-            game.assassin.addPotionEffect(speed, true);
-            game.assassin.addPotionEffect(jump, true);
-            game.assassin.addPotionEffect(haste, true);
+            assassin.addPotionEffect(speed, true);
+            assassin.addPotionEffect(jump, true);
+            assassin.addPotionEffect(haste, true);
 
             assassin.sendMessage("§2You received §aSpeed §2, §aJump §2and §aHaste§2.");
         }
