@@ -13,8 +13,6 @@
 
 package me.honeyblu.assassin;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import me.honeyblu.assassin.commands.StartCommand;
 import me.honeyblu.assassin.listeners.CompassEvent;
 import me.honeyblu.assassin.listeners.DamageEvent;
@@ -47,7 +45,6 @@ public class Game extends JavaPlugin {
     // ------------------------------- //
     public Logger logger;
     public WorldBorderUtil worldBorderUtil;
-    public ProtocolManager protocolManager;
 
     public Player assassin;
     public Player target;
@@ -70,7 +67,6 @@ public class Game extends JavaPlugin {
         logger = getLogger();
 
         // Registering world border utility (and its dependency).
-        protocolManager = ProtocolLibrary.getProtocolManager();
         worldBorderUtil = new WorldBorderUtil(this);
 
         // Registering damage event.
