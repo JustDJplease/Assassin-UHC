@@ -43,11 +43,11 @@ public class Game extends JavaPlugin {
     // ------------------------------- //
     // Public variables
     // ------------------------------- //
-    public Logger logger;
     public WorldBorderUtil worldBorderUtil;
 
     public Player assassin;
     public Player target;
+
     public boolean isFrozen = false;
     public boolean isGameActive = false;
 
@@ -62,9 +62,6 @@ public class Game extends JavaPlugin {
     // ------------------------------- //
     @Override
     public void onEnable() {
-
-        // Registering logger.
-        logger = getLogger();
 
         // Registering world border utility (and its dependency).
         worldBorderUtil = new WorldBorderUtil(this);
@@ -101,11 +98,14 @@ public class Game extends JavaPlugin {
         ScoreboardManager scoreboardManager = getServer().getScoreboardManager();
         Validate.notNull(scoreboardManager, "The scoreboard manager cannot be null!");
         Scoreboard scoreboard = scoreboardManager.getMainScoreboard();
+
         if (scoreboard.getTeam("_do_not_edit_") == null) {
             scoreboard.registerNewTeam("_do_not_edit_");
         }
+
         team = scoreboard.getTeam("_do_not_edit_");
         Validate.notNull(team, "The team cannot be null!");
+
         team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         team.allowFriendlyFire();
     }
@@ -122,6 +122,7 @@ public class Game extends JavaPlugin {
     // Public methods
     // ------------------------------- //
     public void startGame(Player assassin, Player target) {
+        
         // Announcing the game.
         Bukkit.broadcastMessage("§a" + assassin.getName() + "§2 has started hunting §a" + target.getName() + "§2.");
         Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 100f, 0.1f));
