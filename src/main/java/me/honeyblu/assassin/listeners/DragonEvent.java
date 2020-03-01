@@ -17,9 +17,10 @@ import me.honeyblu.assassin.Game;
 import org.apache.commons.lang.Validate;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EnderDragonChangePhaseEvent;
 
-public class DragonEvent {
+public class DragonEvent implements Listener {
 
     // ------------------------------- //
     // Constructor

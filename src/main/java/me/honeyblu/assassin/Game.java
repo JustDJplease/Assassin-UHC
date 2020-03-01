@@ -14,10 +14,7 @@
 package me.honeyblu.assassin;
 
 import me.honeyblu.assassin.commands.StartCommand;
-import me.honeyblu.assassin.listeners.CompassEvent;
-import me.honeyblu.assassin.listeners.DamageEvent;
-import me.honeyblu.assassin.listeners.DeathEvent;
-import me.honeyblu.assassin.listeners.MoveEvent;
+import me.honeyblu.assassin.listeners.*;
 import me.honeyblu.assassin.tasks.LineOfSightTask;
 import me.honeyblu.assassin.util.WorldBorderUtil;
 import org.apache.commons.lang.Validate;
@@ -80,6 +77,10 @@ public class Game extends JavaPlugin {
         // Registering death event.
         DeathEvent deathEvent = new DeathEvent(this);
         pluginManager.registerEvents(deathEvent, this);
+
+        // Registering dragon event.
+        DragonEvent dragonEvent = new DragonEvent(this);
+        pluginManager.registerEvents(dragonEvent, this);
 
         // Registering start command.
         StartCommand startCommand = new StartCommand(this);
