@@ -14,6 +14,7 @@
 package me.honeyblu.assassin.listeners;
 
 import me.honeyblu.assassin.Game;
+import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,10 +43,8 @@ public class DeathEvent implements Listener {
         }
 
         // Preventing NullPointerExceptions.
-        if (game.target == null || game.assassin == null) {
-            game.logger.severe("Player cannot be null.");
-            return;
-        }
+        Validate.notNull(game.target, "Target player cannot be null!");
+        Validate.notNull(game.assassin, "Assassin player cannot be null!");
 
         Player succumbedPlayer = event.getEntity();
 
